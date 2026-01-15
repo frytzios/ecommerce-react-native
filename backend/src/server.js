@@ -1,6 +1,12 @@
 import express from 'express';
 import path from 'path';
 import {ENV} from './config/env.js';    
+import { connect } from 'http2';
+import { connectDB } from './config/db.js';
+import { clerkMiddleware } from '@clerk/express'
+
+app.use(clerkMiddleware())  //req.auth , add auth object under the req => req.auth
+
 
 
 
@@ -22,4 +28,7 @@ if(ENV.NODE_ENV === 'production'){
     })
 }
 
-app.listen( ENV.PORT, () => console.log('El servidor esta corriendo en http://localhost:3000'));
+app.listen( ENV.PORT, () =>{
+    console.log('El servidor esta corriendo en http://localhost:3000');
+    connectDB();
+} );
