@@ -3,10 +3,14 @@ import path from 'path';
 import {ENV} from './config/env.js';    
 import { connect } from 'http2';
 import { connectDB } from './config/db.js';
-import { clerkMiddleware } from '@clerk/express'
+import { clerkMiddleware } from '@clerk/express';
+import {serve} from 'inngest/express'
+import {functions , inngest} from './config/inngest.js';
+
 
 app.use(clerkMiddleware())  //req.auth , add auth object under the req => req.auth
-
+app.use(express.json())
+app.use('/api/inngest', serve({client:inngest, functions}))
 
 
 
