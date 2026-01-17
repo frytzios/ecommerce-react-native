@@ -1,14 +1,14 @@
  import { Inngest } from 'inngest';
- import {conectDB} from './db.js';
+ import {connectDB} from './db.js';
  import {User} from '../models/user.model.js';
 
- export const inngest = new Inngest({ name: 'E-Commerce APP' });
+ export const inngest = new Inngest({ id: 'E-Commerce APP' });
 
  const syncUser = inngest.createFunction(
     {id:'sync/user'},
     {event:'clerk/user.created'},
     async ({event}) =>{
-        await conectDB();
+        await connectDB();
         const {id , email_addresses, first_name, last_name, image_url} = event.data;
 
         const newUser = {
@@ -24,4 +24,15 @@
     }
 );
 
-export const funtions = [syncUser , deleteUserFromDB];
+const deleteUserFromDB = inngest.createFunction(
+    {id:'delete-user-from-db'},
+    {event:'clerk/user.deleted'},
+    async ({event}) =>{
+        await connectDB();
+        const {id} = event.data;
+
+        await User.deleteOne({clerkId: id});
+    }
+);
+
+export const functions = [syncUser , deleteUserFromDB];
