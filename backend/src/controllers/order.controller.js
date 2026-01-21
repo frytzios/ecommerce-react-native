@@ -51,13 +51,19 @@ export async function getUserOrders(req, res) {
         .populate('orderItems.product')
         .sort({ createdAt: -1});
         //check if orders exist
+
+        const orderIds = orders.map( (order) => order._id );
+        const reviews = await Review.find( { orderId: { $in: orderIds}});
+        const reviewedOrderIds = new Set(reviews.map( (review) => review.orderId.toString() ) );
+
+
         
         const ordersWithReviews = await Promise.all(
             orders.map(async (order) => {
             const reviews = await Review.findOne({ orderId: order._id});
             return {
                 ...order.toObject(),
-                hasReviewed: !!reviews,
+                hasReviewed: reviewedOrderIds.has(order._id.toString()),
             };
         })
     );
