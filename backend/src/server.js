@@ -31,6 +31,7 @@ app.use('/api/orders' , orderRoutes)
 app.use('/api/reviews' , reviewRoutes)
 app.use('/api/product' , productRoutes)
 app.use('/api/cart' , cartRoutes)
+app.use('/api/cart' , cartRoutes)
 
 app.get("/api/health", (req, res) => {
     res.status(200).json({ message: "Succes" });
