@@ -96,7 +96,7 @@ export async function getAllOrders(_, res) {
         .populate('user', 'name email')
         .populate('orderItems.product')
         .sort({createdAt:-1});
-        res.status(200).json(orders);
+        res.status(200).json({orders});
     }catch(error){
         console.error('Error in getAllOrders:', error);
         res.status(500).json({ message: "Internal Server Error" });
@@ -156,8 +156,9 @@ export async function getDashboardStats(_, res) {
             },
         },
         ]);
-        const totalRevenue = revenueResult[0]?.revenueResult[0].total || 0;
+        const totalRevenue = revenueResult[0].total || 0;
         const totalCustomers = await User.countDocuments();
+        const totalProducts = await Product.countDocuments();
 
         res.status(200).json({
             totalOrders,
