@@ -47,6 +47,6 @@ if(ENV.NODE_ENV === 'production'){
 }
 
 app.listen( ENV.PORT, () =>{
-    console.log('El servidor esta corriendo en http://localhost:3000');
+    console.log('El servidor esta corriendo en http://localhost:5137');
     connectDB();
 } );
