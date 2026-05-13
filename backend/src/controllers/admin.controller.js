@@ -44,7 +44,7 @@ export async function getAllProducts(_, res){
     try{
         //recuperar todos los productos de la base de datos
         const products = await Product.find().sort({ createdAt: -1 });
-        res.status(200).json(products);
+        res.status(200).json({products});
     } catch(error){
         console.error('Error fetching products' , error);
         res.status(500).json({ message: "Internal Server Error" });
